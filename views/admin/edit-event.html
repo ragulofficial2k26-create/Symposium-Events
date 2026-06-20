@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Event</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/forms.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="icon" href="public/images/logo.png" type="image/png">
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <div class="site-brand"><img src="/images/logo.png" alt="Logo" class="brand-logo" /><span>Symposium</span> Edit Event</div>
+        <div class="toggle-menu">☰</div>
+        <div class="nav-links">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/registrations">Registrations</a>
+          <a href="/admin/reports">Reports</a>
+          <button class="btn btn-secondary" data-logout>Logout</button>
+        </div>
+      </nav>
+      <section class="card" style="max-width:900px; margin:auto;">
+        <div class="step-header">
+          <span class="step-pill active" data-step="1">Step 1 - Event Information</span>
+          <span class="step-pill" data-step="2">Step 2 - Competitions</span>
+        </div>
+        <form id="eventForm" class="card" style="display:grid; gap:1rem;">
+          <div class="form-step active" data-step="1">
+            <div class="form-group">
+              <label for="eventName">Event Name</label>
+              <input id="eventName" type="text" placeholder="Event name" required />
+            </div>
+            <div class="form-group">
+              <label for="poster">Event Poster</label>
+              <input id="poster" type="file" accept="image/*" />
+            </div>
+            <div class="form-group">
+              <label for="eventConductDate">Event Conduct Date</label>
+              <input id="eventConductDate" type="date" required />
+            </div>
+            <div class="form-group">
+              <label for="eventStartTime">Event Start Time</label>
+              <input id="eventStartTime" type="time" required />
+            </div>
+            <div class="form-group">
+              <label>Registration Window</label>
+              <div style="display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));">
+                <input id="registrationStartDate" type="date" required />
+                <input id="registrationStartTime" type="time" required />
+                <input id="registrationEndDate" type="date" required />
+                <input id="registrationEndTime" type="time" required />
+              </div>
+            </div>
+          </div>
+          <div class="form-step" data-step="2">
+            <div class="form-group">
+              <label>Select competitions to enable</label>
+              <div class="check-grid" id="competitionCheckboxes"></div>
+            </div>
+            <div id="competitionSetup" class="competition-config"></div>
+          </div>
+          <div class="form-footer">
+            <button type="button" id="backStep" class="btn btn-secondary">Back</button>
+            <button type="button" id="nextStep" class="btn btn-primary">Next</button>
+            <button type="button" id="updateEvent" class="btn btn-success">Update Event</button>
+          </div>
+        </form>
+      </section>
+    </div>
+    <div class="toast-container"></div>
+    <script src="/js/app.js"></script>
+    <script>
+      const competitionNames = ['Web Design','Poster Design','Debugging','Face Painting','Art from E-Waste','Paper Presentation','Treasure Hunt','Quiz','As You Like It'];
+      let activeStep = 1;
+      let currentEventId = null;
+      let currentEvent = null;
+
+      function updateStep() {
+        document.querySelectorAll('.form-step').forEach((section) => {
+          section.classList.toggle('active', Number(section.dataset.step) === activeStep);
+        });
+        document.querySelectorAll('.step-pill').forEach((pill) => {
+          pill.classList.toggle('active', Number(pill.dataset.step) === activeStep);
+        });
+      }
+
+      function renderCompetitionCheckboxes() {
+        const container = document.querySelector('#competitionCheckboxes');
+        container.innerHTML = competitionNames.map((name) => {
+          const checked = currentEvent?.competitions.some((comp) => comp.name === name) ? 'checked' : '';
+          return `
+            <label class="checkbox-card">
+              <input type="checkbox" name="competition" value="${name}" ${checked} /> ${name}
+            </label>`;
+        }).join('');
+        document.querySelectorAll('input[name="competition"]').forEach((checkbox) => {
+          checkbox.addEventListener('change', buildCompetitionSetup);
+        });
+      }
+
+      function buildCompetitionSetup() {
+        const selected = Array.from(document.querySelectorAll('input[name="competition"]:checked')).map((input) => input.value);
+        const container = document.querySelector('#competitionSetup');
+        container.innerHTML = selected.map((name) => {
+          const existing = currentEvent?.competitions.find((comp) => comp.name === name) || {};
+          return `
+            <div class="card" style="padding:1rem;">
+              <h4>${name}</h4>
+              <div class="form-group">
+                <label>Maximum Participants</label>
+                <input type="number" data-comp="${name}" name="max-${name}" min="1" value="${existing.maxParticipants || 2}" />
+              </div>
+              <div class="form-group">
+                <label>Rules</label>
+                <textarea data-comp="${name}" name="rules-${name}" placeholder="Enter competition rules">${existing.rules || ''}</textarea>
+              </div>
+              <div class="form-group">
+                <label>Venue</label>
+                <input type="text" data-comp="${name}" name="venue-${name}" placeholder="Venue details" value="${existing.venue || ''}" />
+              </div>
+              <div class="form-group">
+                <label>Competition Start Time</label>
+                <input type="time" data-comp="${name}" name="start-${name}" value="${existing.startTime || ''}" />
+              </div>
+            </div>`;
+        }).join('');
+      }
+
+      async function loadCurrentEvent() {
+        const params = new URLSearchParams(window.location.search);
+        currentEventId = params.get('eventId');
+        if (!currentEventId) return;
+        const response = await fetch(`/api/admin/events/${currentEventId}`);
+        if (!response.ok) return alert('Unable to load event data');
+        currentEvent = await response.json();
+        document.querySelector('#eventName').value = currentEvent.eventName;
+        document.querySelector('#eventConductDate').value = currentEvent.eventConductDate;
+        document.querySelector('#eventStartTime').value = currentEvent.eventStartTime;
+        document.querySelector('#registrationStartDate').value = currentEvent.registrationStartDate;
+        document.querySelector('#registrationStartTime').value = currentEvent.registrationStartTime;
+        document.querySelector('#registrationEndDate').value = currentEvent.registrationEndDate;
+        document.querySelector('#registrationEndTime').value = currentEvent.registrationEndTime;
+        renderCompetitionCheckboxes();
+        buildCompetitionSetup();
+      }
+
+      document.querySelector('#nextStep').addEventListener('click', () => {
+        if (activeStep === 1) {
+          const requiredFields = ['#eventName','#eventConductDate','#eventStartTime','#registrationStartDate','#registrationStartTime','#registrationEndDate','#registrationEndTime'];
+          const valid = requiredFields.every((query) => document.querySelector(query).value);
+          if (!valid) return alert('Please complete all event information fields.');
+          activeStep = 2;
+          updateStep();
+        }
+      });
+
+      document.querySelector('#backStep').addEventListener('click', () => {
+        activeStep = 1;
+        updateStep();
+      });
+
+      document.querySelector('#updateEvent').addEventListener('click', async () => {
+        const selected = Array.from(document.querySelectorAll('input[name="competition"]:checked')).map((input) => input.value);
+        if (!selected.length) return alert('Enable at least one competition.');
+        const competitions = selected.map((name) => ({
+          name,
+          maxParticipants: Number(document.querySelector(`input[name="max-${name}"]`).value) || 1,
+          rules: document.querySelector(`textarea[name="rules-${name}"]`).value,
+          venue: document.querySelector(`input[name="venue-${name}"]`).value,
+          startTime: document.querySelector(`input[name="start-${name}"]`).value
+        }));
+        const formData = new FormData();
+        formData.append('eventName', document.querySelector('#eventName').value);
+        formData.append('eventConductDate', document.querySelector('#eventConductDate').value);
+        formData.append('eventStartTime', document.querySelector('#eventStartTime').value);
+        formData.append('registrationStartDate', document.querySelector('#registrationStartDate').value);
+        formData.append('registrationStartTime', document.querySelector('#registrationStartTime').value);
+        formData.append('registrationEndDate', document.querySelector('#registrationEndDate').value);
+        formData.append('registrationEndTime', document.querySelector('#registrationEndTime').value);
+        formData.append('competitions', JSON.stringify(competitions));
+        const poster = document.querySelector('#poster').files[0];
+        if (poster) formData.append('poster', poster);
+        const response = await fetch(`/api/admin/events/${currentEventId}`, { method: 'PUT', body: formData });
+        const result = await response.json();
+        if (!response.ok) return alert(result.message || 'Failed to update event');
+        alert('Event updated successfully');
+        window.location.href = '/admin/dashboard';
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        renderCompetitionCheckboxes();
+        document.querySelectorAll('input[name="competition"]').forEach((checkbox) => {
+          checkbox.addEventListener('change', buildCompetitionSetup);
+        });
+        loadCurrentEvent();
+      });
+    </script>
+  </body>
+</html>

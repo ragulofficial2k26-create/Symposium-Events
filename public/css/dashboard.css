@@ -1,0 +1,90 @@
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+}
+
+.stat-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.stat-card strong {
+  font-size: 2.2rem;
+  display: block;
+}
+
+.event-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.event-list-item {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 120px 1fr auto;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 20px;
+}
+
+.event-list-item img {
+  width: 120px;
+  border-radius: 18px;
+  height: 88px;
+  object-fit: cover;
+}
+
+.event-list-item div {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.dashboard-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.registration-card {
+  border-radius: 20px;
+  padding: 1.2rem;
+}
+
+.registration-card h4 {
+  margin: 0 0 0.75rem;
+}
+
+.registration-card p {
+  margin: 0.2rem 0;
+}
+
+.icon-box {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(59, 130, 246, 0.14);
+}

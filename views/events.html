@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Symposium Events</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/cards.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="icon" href="public/images/logo.png" type="image/png">
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <div class="site-brand"><img src="/images/logo.png" alt="Logo" class="brand-logo" /><span>Symposium</span> Events</div>
+        <div class="toggle-menu">☰</div>
+        <div class="nav-links">
+          <a href="/events">Explore</a>
+          <a href="/my-registrations">My Registrations</a>
+          <a href="/profile">Profile</a>
+          <button class="btn btn-third" data-logout>Logout</button>
+        </div>
+      </nav>
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h1>Available Symposium Events</h1>
+            <p class="text-muted">Browse events and register your college team with a single click.</p>
+            <p style="color:#facc15; font-weight:700; margin-top:0.5rem;">After registration download the registration PDF in My Registration Page.</p>
+            <p style="color:#49f0ff; font-weight:700; margin-top:0.5rem;">In Registration PDF your Lot number will provide.</p>
+          </div>
+          <div>
+            <input id="searchEvents" type="search" placeholder="Search events..." style="width:260px;" />
+          </div>
+        </div>
+      </section> <br><br>
+      <section class="events-grid" style="display:grid; gap:1.5rem; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));"></section>
+    </div>
+    <div class="toast-container"></div>
+    <script src="/js/app.js"></script>
+    <script src="/js/event.js"></script>
+    <script src="/js/countdown.js"></script>
+  </body>
+</html>

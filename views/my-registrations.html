@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Registrations</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/cards.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="icon" href="public/images/logo.png" type="image/png">
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <div class="site-brand"><img src="/images/logo.png" alt="Logo" class="brand-logo" /><span>Symposium</span> My Registrations</div>
+        <div class="toggle-menu">☰</div>
+        <div class="nav-links">
+          <a href="/events">Events</a>
+          <a href="/profile">Profile</a>
+          <button class="btn btn-third" data-logout>Logout</button>
+        </div>
+      </nav>
+      <section class="card">
+        <div class="card-header" style="justify-content:space-between; gap:1rem;">
+          <h1>My Registrations</h1>
+          <button class="btn btn-primary" onclick="window.location.href='/events'">Browse Events</button>
+        </div>
+      </section> <br><br>
+      <div id="registrationCards" style="display:grid; gap:1.25rem;"><br></div>
+    </div>
+    <div class="toast-container"></div>
+    <script src="/js/app.js"></script>
+    <script src="/js/registration.js"></script>
+  </body>
+</html>

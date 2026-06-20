@@ -1,0 +1,85 @@
+.event-card {
+  border-radius: 26px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.96));
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  display: grid;
+  grid-template-rows: 220px 1fr;
+  min-height: 380px;
+  position: relative;
+}
+
+.event-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.event-card-body {
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.event-card-body h3 {
+  margin: 0;
+}
+
+.event-card-body p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.event-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.event-meta {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.event-meta span {
+  font-size: 0.95rem;
+}
+
+.event-card .badge {
+  margin-top: 0.5rem;
+}
+
+.event-details-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.registration-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.countdown-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.countdown-status {
+  display: inline-flex;
+  width: fit-content;
+}
+
+.countdown-timer {
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}

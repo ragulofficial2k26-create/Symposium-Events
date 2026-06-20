@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Symposium Login</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/forms.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="icon" href="public/images/logo.png" type="image/png">
+  </head>
+  <body>
+    <div class="container" style="min-height:100vh; display:grid; place-items:center;">
+      <div class="card" style="max-width:520px; width:100%;">
+        <div class="card-header" style="flex-direction:column; align-items:flex-start; gap:0.5rem;">
+          <div class="site-brand"><img src="/images/logo.png" alt="Logo" class="brand-logo" /><span>Symposium</span> Hub</div>
+          <p class="text-muted">Secure login for college coordinators and admins.</p>
+        </div>
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" type="text" placeholder="Enter your username" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="Enter your password" required />
+          </div>
+          <div class="form-footer" style="justify-content:space-between; align-items:center;">
+            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.94rem; color:var(--muted);">
+              <input id="rememberMe" type="checkbox" /> Remember me
+            </label>
+            <a href="#" class="text-muted" style="text-decoration:none;">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">Sign in</button>
+          <p class="text-muted" style="margin-top:1rem; text-align:center;">New college coordinator? <a href="/register" style="color:var(--primary); text-decoration:none;">Create an account</a></p>
+        </form>
+      </div>
+    </div>
+    <div class="toast-container"></div>
+    <script src="/js/app.js"></script>
+    <script src="/js/login.js"></script>
+  </body>
+</html>

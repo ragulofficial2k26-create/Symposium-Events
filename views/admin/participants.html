@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Participants</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="icon" href="public/images/logo.png" type="image/png">
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <div class="site-brand"><img src="/images/logo.png" alt="Logo" class="brand-logo" /><span>Symposium</span> Admin</div>
+        <div class="toggle-menu">☰</div>
+        <div class="nav-links">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/add-event">Add Event</a>
+          <a href="/admin/registrations">Registrations</a>
+          <a href="/admin/reports">Reports</a>
+          <button class="btn btn-secondary" data-logout>Logout</button>
+        </div>
+      </nav>
+      <section class="card">
+        <div class="card-header" style="justify-content:space-between; gap:1rem;">
+          <div>
+            <h2>Participants</h2>
+            <p class="text-muted">View names of all registered participants.</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>College</th>
+                <th>Competition</th>
+                <th>Participants</th>
+              </tr>
+            </thead>
+            <tbody id="participantBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    <script src="/js/app.js"></script>
+    <script>
+      async function loadParticipants() {
+        const response = await fetch('/api/admin/registrations');
+        const regs = response.ok ? await response.json() : [];
+        document.querySelector('#participantBody').innerHTML = regs
+          .flatMap((reg) => reg.competitions.map((competition) => `
+            <tr>
+              <td>${reg.eventName}</td>
+              <td>${reg.collegeName}</td>
+              <td>${competition.name}</td>
+              <td>${competition.participants.join(', ')}</td>
+            </tr>`))
+          .join('');
+      }
+      loadParticipants();
+    </script>
+  </body>
+</html>
